@@ -1,0 +1,26 @@
+name: mindspore
+channels:
+  # You can use the TUNA mirror to speed up the installation if you are in mainland China.
+  # - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch
+  # - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  # - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+  # - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2
+  # - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+  - mindspore
+  - pytorch
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.7.9
+  - mindspore-gpu=1.8.1
+  - cudatoolkit=10.1
+  - pytorch
+  - torchvision
+  - ipython
+  - tqdm
+  - numba
+  # - sparsehash  # dependency for torchsparse
+  # - pip
+  # - pip:
+  #   - -r requirements.txt
+  #   - git+https://github.com/mit-han-lab/torchsparse.git
