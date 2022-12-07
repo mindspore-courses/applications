@@ -1,0 +1,63 @@
+# Builtin Configurations(DO NOT CHANGE THESE CONFIGURATIONS unless you know exactly what you are doing)
+enable_modelarts: False
+# Url for modelarts
+data_url: ""
+train_url: ""
+checkpoint_url: ""
+# Path for local
+data_path: "/cache/data"
+output_path: "/cache/train"
+load_path: "/cache/checkpoint_path"
+enable_profiling: False
+
+modelarts_dataset_unzip_name: ''
+folder_name_under_zip_file: ''
+# ==============================================================================
+description: 'task_distill'
+task_type: "classification"
+task_name: ""
+device_id: 0
+# task_distill related
+do_train: "true"
+do_eval: "true"
+td_phase1_epoch_size: 10
+td_phase2_epoch_size: 3
+do_shuffle: "true"
+enable_data_sink: "true"
+max_ckpt_num: 1
+data_sink_steps: 1
+load_teacher_ckpt_path: ""
+load_gd_ckpt_path: ""
+load_td1_ckpt_path: ""
+onnx_path: ""
+train_data_dir: ""
+eval_data_dir: ""
+schema_dir: ""
+assessment_method: "accuracy"
+dataset_type: "tfrecord"
+# export related
+ckpt_file: ''
+file_name: "tinybert"
+file_format: "MINDIR"
+num_labels: 2
+
+
+
+
+
+phase2_cfg:
+    batch_size: 32
+    loss_scale_value: 65536
+    scale_factor: 2
+    scale_window: 50
+    optimizer_cfg:
+        AdamWeightDecay:
+            learning_rate: 0.00002  # 5e-5
+            end_learning_rate: 0.0  # 0.0
+            power: 1.0
+            weight_decay: 0.0001  # 1e-4
+            eps: 0.000001  # 1e-6
+            decay_filter: ['layernorm', 'bias']
+
+eval_cfg:
+    batch_size: 32

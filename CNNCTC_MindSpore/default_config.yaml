@@ -1,0 +1,46 @@
+# Builtin Configurations(DO NOT CHANGE THESE CONFIGURATIONS unlesee you know exactly what you are doing)
+
+
+#choose device
+
+device_target: "GPU"
+
+# ======================================================================================
+# Training options
+CHARACTER: "0123456789abcdefghijklmnopqrstuvwxyz"
+
+# NUM_CLASS = len(CHARACTER) + 1
+NUM_CLASS: 37
+
+HIDDEN_SIZE: 512
+FINAL_FEATURE_WIDTH: 26
+
+# dataset config
+IMG_H: 32
+IMG_W: 100
+TRAIN_DATASET_PATH: "/home/wch/cnnctc_wch/cnnctc_data/ST_MJ/"
+TRAIN_DATASET_INDEX_PATH: "/home/wch/cnnctc_wch/cnnctc_data/st_mj_fixed_length_index_list.pkl"
+TRAIN_BATCH_SIZE: 64
+TRAIN_EPOCHS: 3
+
+# training config
+run_distribute: False
+PRED_TRAINED: ""
+SAVE_PATH: "./"
+#LR
+base_lr: 0.0005
+warmup_step: 2000
+warmup_ratio: 0.0625
+MOMENTUM: 0.8
+LOSS_SCALE: 8096
+SAVE_CKPT_PER_N_STEP: 2000
+KEEP_CKPT_MAX_NUM: 5
+
+# ======================================================================================
+# Eval options
+TEST_DATASET_PATH: "/home/wch/cnnctc_wch/cnnctc_data/IIIT"
+TEST_BATCH_SIZE: 256
+CHECKPOINT_PATH: "/home/wch/cnnctc_wch/ckpt_standalone/CNNCTC-3_650.ckpt"
+
+
+

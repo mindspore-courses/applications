@@ -1,0 +1,10 @@
+numpy
+nibabel
+pyyaml
+SimpleITK
+onnxruntime-gpu
+tqdm
+ml_collections
+logger
+medpy
+mindinsight
