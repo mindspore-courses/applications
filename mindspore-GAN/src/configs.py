@@ -1,6 +1,6 @@
-TOTLE_EPOCH = 100         # 训练周期数
-latent_size = 100         # 隐码的长度
-BATCH_SIZE = 128          # 用于训练的训练集批量大小
+TRAIN_EPOCH = 200        # 训练周期数
+LATENT_DIM = 100         # 隐向量的长度
+BATCH_SIZE = 64          # 用于训练的训练集批量大小
 lr = 0.0002               # 学习率
 b1 = 0.5                  # Adam优化器的beta1超参数
 b2 = 0.999                # Adam优化器的beta2超参数

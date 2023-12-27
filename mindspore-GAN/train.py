@@ -15,7 +15,6 @@ from src.loss import *
 from data_loader import *
 from src.configs import *
 from src.GAN_model import *
-from src.TrainOneStep import *
 from src.utils import *
 import mindspore
 # 设置参数保存路径
@@ -32,49 +31,72 @@ def save_imgs(gen_imgs1, idx): # 保存生成的test图像
         plt.axis("off")
     plt.savefig(image_path+"/{}.png".format(idx))
 
-# 选择执行模式为图模式；指定训练使用的平台为"GPU"，如需使用昇腾硬件可将其替换为"Ascend"
-mindspore.set_context(mode=mindspore.GRAPH_MODE, device_target="Ascend")
+# Mindspore2.0默认执行模式为动态图模式(PYNATIVE_MODE)，指定训练使用的平台为"GPU"，如需使用昇腾硬件可将其替换为"Ascend"
+mindspore.set_context(device_target="GPU")
 
 # 获取处理后的数据集
-dataset = create_dataset_train(batch_size=BATCH_SIZE, repeat_size=1, latent_size=latent_size)
-# 获取数据集大小
-iter_size = dataset.get_dataset_size()
+train_dataset = get_train_dataset(batch_size=BATCH_SIZE)
 
 # 利用随机种子创建一批隐码用来观察G
 np.random.seed(2323)
-test_noise = Tensor(np.random.normal(size=(25, latent_size)), dtype=mstype.float32)
+test_noise = Tensor(np.random.normal(size=(25, LATENT_DIM)), dtype=mstype.float32)
 random.shuffle(test_noise)
 
 # 实例化生成器和判别器
-netGenerator = Generator(latent_size)
+netGenerator = Generator(LATENT_DIM)
 netDiscriminator = Discriminator()
 # 为生成器和判别器设置优化器
 optimizerG = nn.Adam(netGenerator.trainable_params(), learning_rate=lr, beta1=b1, beta2=b2)
 optimizerD = nn.Adam(netDiscriminator.trainable_params(), learning_rate=lr, beta1=b1, beta2=b2)
 # 实例化WithLossCell
-loss_G = GenWithLossCell(netGenerator, netDiscriminator, adversarial_loss)
-loss_D = DisWithLossCell(netGenerator, netDiscriminator, adversarial_loss)
-# 实例化TrainOneStepCell
-GAN_train = TrainOneStepCell(loss_G, loss_D, optimizerG, optimizerD, gap)
+g_loss_fn = GenWithLossCell(netGenerator, netDiscriminator, adversarial_loss)
+d_loss_fn = DisWithLossCell(netGenerator, netDiscriminator, adversarial_loss)
 # set train
 netGenerator.set_train()
 netDiscriminator.set_train()
+
+# 定义单次训练过程的所需要的函数以及单次训练更新参数的流程
+def generator_forward_fn(noise):
+    out = netGenerator(noise)
+    loss = g_loss_fn(noise)
+    return loss, out
+
+def discriminator_forward_fn(real_img, noise):
+    out = netDiscriminator(netGenerator(noise))
+    loss = d_loss_fn(real_img, noise)
+    return loss, out
+
+generator_grad_fn = mindspore.value_and_grad(generator_forward_fn, None, optimizerG.parameters, has_aux=True)
+discriminator_grad_fn = mindspore.value_and_grad(discriminator_forward_fn, None, optimizerD.parameters, has_aux=True)
+
+def train_step(real_img, noise):
+    (g_loss, _), g_grads = generator_grad_fn(noise)
+    optimizerG(g_grads)
+    (d_loss, _), d_grads = discriminator_grad_fn(real_img, noise)
+    optimizerD(d_grads)
+    return g_loss, d_loss
+
 # 储存loss和生成图片
 G_losses, D_losses = [], []
 
-
-for epoch in range(TOTLE_EPOCH):
+for epoch in range(TRAIN_EPOCH):
     start = time.time()
-    train_bar = tqdm(dataset_mnist, ncols=100, total=iter_size)
-    for (iter, data) in enumerate(train_bar):
-        image, latent_code = data
-        image = (image - 127.5) / 127.5 # [0, 255] -> [-1, 1]
-        image = ops.Reshape()(image, (image.shape[0], 1, image.shape[1], image.shape[2]))
-        d_loss, g_loss = GAN_train(image, latent_code, iter)
+    iter_size = train_dataset.get_dataset_size()
+    train_bar = tqdm(train_dataset, ncols=100, total=iter_size)
+    g_loss_epoch = 0.0
+    d_loss_epoch = 0.0
+    for (i, batch) in enumerate(train_bar):
+        batch_imgs, _ = batch
+        batch_size = batch_imgs.shape[0]
+        batch_noise = Tensor(np.random.normal(size=(batch_size, LATENT_DIM)), dtype=mstype.float32)
+        random.shuffle(batch_noise)
+        g_loss, d_loss = train_step(batch_imgs, batch_noise)
         if iter % 100 == 0:
-            print('[%3d/%d][%3d/%d]  Loss_D:%6.4f  Loss_G:%6.4f' % (epoch+1, TOTLE_EPOCH, iter+1, iter_size, d_loss.asnumpy(), g_loss.asnumpy()))
-    D_losses.append(d_loss.asnumpy())
-    G_losses.append(g_loss.asnumpy())
+            print('[%3d/%d][%3d/%d]  Loss_D:%6.4f  Loss_G:%6.4f' % (epoch+1, TRAIN_EPOCH, i+1, iter_size, d_loss.asnumpy(), g_loss.asnumpy()))
+        g_loss_epoch += g_loss.asnumpy()
+        d_loss_epoch += d_loss.asnumpy()
+    D_losses.append(d_loss.asnumpy()/iter_size)
+    G_losses.append(g_loss.asnumpy()/iter_size)
     end = time.time()
     print("time of epoch {} is {:.2f}s".format(epoch+1, end - start))
 
@@ -85,6 +107,6 @@ for epoch in range(TOTLE_EPOCH):
     save_imgs(gen_imgs.asnumpy(), epoch)
 
     # 保存网络模型参数为ckpt文件
-    if(epoch % 10 == 0):
+    if(epoch % 5 == 0):
         save_checkpoint(netGenerator, checkpoints_path+"/Generator%d.ckpt" % (epoch))
         save_checkpoint(netDiscriminator, checkpoints_path+"/Discriminator%d.ckpt" % (epoch))
