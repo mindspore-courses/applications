@@ -1,18 +1,16 @@
 import gc
-import os
 import numpy as np
 import matplotlib.pyplot as plt
-from mindspore import context
+
 import mindspore.numpy
 from mindspore.common import dtype as mstype
 from mindspore.common import set_seed
+from mindspore.dataset import MnistDataset
 from mindspore import Tensor
-from numpy import cov
-from numpy.random import random
-from scipy.linalg import sqrtm
+
+from src.GAN_model import *
 from src.configs import *
-from data_loader import *
-from GAN_model import *
+
 
 set_seed(1)
 reshape = mindspore.ops.Reshape()
@@ -66,23 +64,30 @@ def cross_validate_sigma(samples, data, sigmas, batch_size):
 
 # 获取有效的验证图像
 def get_valid(batch_size_valid=1000):
-    dataset1 = create_dataset_valid(batch_size=batch_size_valid, repeat_size=1, latent_size=100)
-    data = []
-    for image in enumerate(dataset1):
-        data = image
+    dataset = MnistDataset("MNIST_Data/train", "train")
+    dataset = dataset.map(
+        operations=lambda x: (
+            x[-10000:].astype("float32")
+        ),
+        output_columns=["image"]
+    )
+    dataset = dataset.batch(batch_size_valid)
+    for data in dataset.create_dict_iterator():
+        image = data["image"]
         break
-    image = data[1]
-    image = image[0]
+    print(type(image))
     image = reshape(image, (image.shape[0], 784))
     return image
-reshape
 
 # 获取测试图像
 def get_test(limit_size):
-    dataset_ = decode_idx3_ubyte(test_images_file).astype("float32")
-    image = Tensor(dataset_)
-    image = reshape(image, (image.shape[0], 784))
-    return image[0:limit_size]
+    dataset_ = MnistDataset("MNIST_Data/test", "test").batch(limit_size)
+    for batch_imgs, _ in dataset_.create_tuple_iterator():
+        batch_imgs = batch_imgs.astype(mindspore.float32)
+        test_data = reshape(batch_imgs, (batch_imgs.shape[0], -1))
+        break
+    return test_data
+    
 
 # 使用对数最大似然进行评估
 def parzen(samples):
@@ -96,7 +101,7 @@ def parzen(samples):
     sigma_range = np.logspace(-1, 0, num=5)  # 等比数列
     sigma = cross_validate_sigma(samples, valid, sigma_range, batch_size=BATCH_SIZE_TEST)
 
-    print("Using Sigma: {}".format(sigma))
+    # print("Using Sigma: {}".format(sigma))
     gc.collect()
 
     test_data = get_test(limit_size=1000) / 255
@@ -105,12 +110,11 @@ def parzen(samples):
 
     return ll.mean(), se
 
-context.set_context(mode=context.GRAPH_MODE, device_target="GPU")
-test_noise = Tensor(np.random.normal(size=(1000, latent_size)), dtype=mstype.float32)
+test_noise = Tensor(np.random.normal(size=(1000, LATENT_DIM)), dtype=mstype.float32)
 llh, epochs = [], []
 def eval(n):
     # 导入生成器参数
-    model = Generator(latent_size=100)
+    model = Generator(latent_dim=LATENT_DIM)
     param_dict = mindspore.load_checkpoint("./result/checkpoints/Generator"+str(n)+".ckpt")
     mindspore.load_param_into_net(model, param_dict)
     # 生成噪音数据
@@ -122,9 +126,8 @@ def eval(n):
     epochs.append(n)
     llh.append(mean_ll)
     print("epoch = {}, Log-Likelihood of test set = {}, se: {}".format(n, mean_ll, se_ll))
-
     
-for epoch in range(0, 100, 5):
+for epoch in range(0, TRAIN_EPOCH, 5):
     eval(epoch)
 llh = [i.asnumpy() for i in llh]
 plt.plot(epochs, llh)

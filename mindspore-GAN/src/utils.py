@@ -37,7 +37,7 @@ def write2file(loss_d, loss_g, title):
     f.close()
 
 def showGif(image_list):
-    # show_list = []
+    show_list = []
     fig = plt.figure(figsize=(5, 5), dpi=120)
     for epoch in range(len(image_list)):
         images = []
@@ -46,10 +46,9 @@ def showGif(image_list):
             images.append(row)
         img = np.clip(np.concatenate((images[:]), axis=0), 0, 1)
         plt.axis("off")
-        # show_list.append([plt.imshow(img)])
-    plt.savefig(img_path+"/{}.png".format(idx))
-    # ani = animation.ArtistAnimation(fig, show_list, interval=1000, repeat_delay=1000, blit=True)
-    # ani.save('./gan.gif', writer='pillow', fps=1)
+        show_list.append([plt.imshow(img)])
+    ani = animation.ArtistAnimation(fig, show_list, interval=1000, repeat_delay=1000, blit=True)
+    ani.save('./gan.gif', writer='pillow', fps=1)
 
 # D_losses = Tensor([0,1,2,3,4])
 # G_losses = Tensor([2.2, 4.1, 3.9, 5.1, 3.65])
