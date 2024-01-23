@@ -19,7 +19,7 @@ import cv2
 from PIL import Image
 
 from mindspore import Tensor
-import mindspore.dataset.vision.py_transforms as py_vision
+import mindspore.dataset.vision as py_vision
 
 class ToTensor:
     """

@@ -26,7 +26,7 @@ from mindspore import context
 from model.loss import ReCoNetWithLoss
 from model.reconet import ReCoNet
 from model.vgg import vgg16
-from dataset.dataset import load_dataset
+from dataset.dataset import load_dataset2
 from utils.reconet_utils import vgg_encode_image, occlusion_mask_from_flow
 
 
@@ -36,7 +36,8 @@ def main(args_opt):
     train_mode = context.GRAPH_MODE
     context.set_context(mode=train_mode, device_target=args_opt.device_target)
     # Load Monkaa dataset
-    train_dataset = load_dataset(args_opt.monkaa, args_opt.flyingthings3d)
+    train_dataset = load_dataset2(args_opt.monkaa)
+    
     step_size = train_dataset.get_dataset_size()
     print('dataset size is {}'.format(step_size))
 

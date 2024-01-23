@@ -288,3 +288,20 @@ def load_dataset(monkaa, ft3d):
     train_dataset = monkaa_dataset + ft3d_dataset
     train_dataset = train_dataset.batch(batch_size=2, drop_remainder=True)
     return train_dataset
+
+def load_dataset2(monkaa):
+    """
+    Load dataset for ReCoNet only monkaa
+
+    Args:
+        monkaa (str): Path of Monkaa dataset directory
+        ft3d (str): Path of Flyingthings3d dataset directory
+
+    Returns:
+        dataset with batch_size=2
+    """
+    monkaa_dataset = ds.GeneratorDataset(Monkaa(monkaa), COLUMNS)
+
+    train_dataset = monkaa_dataset
+    train_dataset = train_dataset.batch(batch_size=2, drop_remainder=True, num_parallel_workers=1)
+    return train_dataset
