@@ -17,7 +17,7 @@
 import mindspore
 import mindspore.nn as nn
 import mindspore.ops as ops
-import mindspore.dataset.vision.py_transforms as py_vision
+import mindspore.dataset.vision as py_vision
 from mindspore import Tensor
 from mindvision.io import imread
 from PIL import Image
@@ -361,7 +361,7 @@ def resize_optical_flow(optical_flow, h, w):
         Tensor, optical flow
     """
     optical_flow_nchw = nhwc_to_nchw(optical_flow)
-    optical_flow_resized_nchw = nn.ResizeBilinear()(optical_flow_nchw, (h, w))
+    optical_flow_resized_nchw = ops.ResizeBilinear((h, w))(optical_flow_nchw)
     optical_flow_resized = nchw_to_nhwc(optical_flow_resized_nchw)
 
     old_h, old_w = optical_flow_nchw.shape[-2:]

@@ -17,6 +17,7 @@ import numpy as np
 
 import mindspore
 import mindspore.nn as nn
+import mindspore.ops as ops
 from mindspore import load_checkpoint, load_param_into_net, Parameter
 from mindspore.common import initializer as init
 from mindspore import ops, Tensor
@@ -223,16 +224,16 @@ class Decoder(nn.Cell):
 
     def __init__(self):
         super().__init__()
-        self.up_sample = nn.ResizeBilinear()
+        self.up_sample_factor = 2
         self.conv1 = ConvNormLayer(192, 96, 3, 1)
         self.conv2 = ConvNormLayer(96, 48, 3, 1)
         self.conv3 = ConvTanhLayer(48, 3, 9, 1)
 
     def construct(self, x):
         """Construct Decoder."""
-        x = self.up_sample(x, scale_factor=2)
+        x = ops.ResizeBilinear((x.shape[-2]*self.up_sample_factor, x.shape[-1]*self.up_sample_factor))(x)
         x = self.conv1(x)
-        x = self.up_sample(x, scale_factor=2)
+        x = ops.ResizeBilinear((x.shape[-2]*self.up_sample_factor, x.shape[-1]*self.up_sample_factor))(x)
         x = self.conv2(x)
         x = self.conv3(x)
         return x
