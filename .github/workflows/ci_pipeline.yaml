@@ -1,0 +1,63 @@
+# This is a workflow for Pylint check.
+
+name: CI Pipeline
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  pylint-check:
+    name: Pylint Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip==24.0
+        pip install torch --index-url https://download.pytorch.org/whl/cpu
+        if [ -f "requirements.txt" ]; then pip install -r requirements.txt; fi
+
+    - name: Get target directories
+      id: get_dirs
+      run: |
+        DIRS=$(find . -maxdepth 1 -type d ! -name "." ! -name ".github" | tr '\n' ' ')
+
+        echo "Target directories: $DIRS"
+
+        echo "DIRS=$DIRS" >> "$GITHUB_ENV"
+
+    - name: Run Pylint
+      run: |
+        NUM_CORES=$(nproc)
+        pylint ${{ env.DIRS }} --jobs=$NUM_CORES --rcfile=.github/pylint.conf
+
+  markdownlint-check:
+    name: Markdownlint Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v15
+        with:
+          globs: "**/*.md"
+          config: '.github/.markdownlint.json'

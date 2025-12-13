@@ -1,1 +1,0 @@
-# MindSpore-YOLOv5
