@@ -6,7 +6,7 @@ This directory contains ready-to-use Natural Language Processing application not
 
 | No. | Model | Description |
 | :-- | :---- | :---------- |
-| 1   | [BERT (SWAG)](./multiple_choice/swag_bert_run_result.ipynb) | Fine-tuning BERT on SWAG dataset for Multiple Choice tasks using MindSpore NLP. |
+| 1   | [BERT (SWAG_Multiple_Choice)](./multiple_choice/SWAG_Multiple_Choice.ipynb) | Fine-tuning BERT on SWAG dataset for Multiple Choice tasks using Mind NLP. |
 
 ## Contributing New NLP Applications
 
