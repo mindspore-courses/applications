@@ -18,8 +18,8 @@ Addtional community-contributed or legacy notebooks are stored under the [legacy
 
 If a notebook does not specify environment requirements, assume it runs with:
 
-- mindspore == 2.7.0
-- mindnlp == 0.5.1
+- mindspore == 2.3.1
+- mindnlp == 0.4.1
 
 > If you need any of these applications updated, please open an [Issue](https://github.com/mindspore-courses/applications/issues) with the required MindSpore and MindSpore NLP version.
 > Developers are also welcome to update these notebooks to the latest version by submitting a [Pull Request](https://github.com/mindspore-courses/applications/pulls).
