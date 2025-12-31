@@ -4,7 +4,9 @@ This directory contains ready-to-use Natural Language Processing application not
 
 ## Application List
 
-Currently no notebooks are listed in this directory.
+| No. | Model | Description                     |
+| :-- | :---- | :------------------------------ |
+| 1   | / | This section is empty for now — feel free to contribute your first application! |
 
 ## Contributing New NLP Applications
 
