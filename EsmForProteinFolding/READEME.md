@@ -1,1 +1,0 @@
-# 基于MindSpore NLP实现protein folding应用案例开发
