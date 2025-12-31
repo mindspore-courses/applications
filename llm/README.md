@@ -11,7 +11,7 @@ The following notebooks are actively maintained in sync with MindSpore and MindS
 | No. | Model | Description              |
 | :-- | :---- | :----------------------- |
 | 1   | [t5](./t5/) | Includes notebooks for T5 finetuning and inference on tasks such as email summarization |
-
+| 2   | [esmforproteinfolding](./esmforproteinfolding/) | Includes notebooks for EsmForProteinFolding finetuning and inference on tasks  |
 ### Community-Driven / Legacy Applications
 
 Addtional community-contributed or legacy notebooks are stored under the [legacy](./legacy/) directory. These notebooks are not actively maintained and may rely on older APIs.
