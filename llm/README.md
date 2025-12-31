@@ -11,6 +11,7 @@ The following notebooks are actively maintained in sync with MindSpore and MindS
 | No. | Model | Description              |
 | :-- | :---- | :----------------------- |
 | 1   | [t5](./t5/) | Includes notebooks for T5 finetuning and inference on tasks such as email summarization |
+| 2   | [BERT (SWAG Multiple Choice)](./bert/finetune_bert_multiple_choice.ipynb) | Fine-tuning BERT on SWAG dataset for Multiple Choice tasks using MindSpore NLP |
 
 ### Community-Driven / Legacy Applications
 
