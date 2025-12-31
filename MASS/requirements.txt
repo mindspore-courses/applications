@@ -1,7 +1,0 @@
-nltk
-jieba
-numpy
-subword-nmt
-files2rouge
-pyyaml
-rouge
