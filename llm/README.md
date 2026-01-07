@@ -11,6 +11,7 @@ The following notebooks are actively maintained in sync with MindSpore and MindS
 | No. | Model | Description              |
 | :-- | :---- | :----------------------- |
 | 1   | [t5](./t5/) | Includes notebooks for T5 finetuning and inference on tasks such as email summarization |
+| 2 | [distilgpt2](./distilgpt2/) | Includes notebooks for DistilGPT-2 finetuning and inference on causal language modeling (text generation) tasks. |
 
 ### Community-Driven / Legacy Applications
 
