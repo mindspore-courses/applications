@@ -20,33 +20,68 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.11
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+          cache: "pip"
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip==24.0
-        pip install torch --index-url https://download.pytorch.org/whl/cpu
-        if [ -f "requirements.txt" ]; then pip install -r requirements.txt; fi
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip==24.0
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          if [ -f "requirements.txt" ]; then pip install -r requirements.txt; fi
 
-    - name: Get target directories
-      id: get_dirs
-      run: |
-        DIRS=$(find . -maxdepth 1 -type d ! -name "." ! -name ".github" | tr '\n' ' ')
+      - name: Get target directories
+        id: get_files
+        run: |
+          # Find .py files
+          PY_FILES=$(find . -type f -name "*.py" ! -path "./.git/*" ! -path "./.github/*")
+          PY_FILE_COUNT=$(echo "$PY_FILES" | wc -l | tr -d ' ')
 
-        echo "Target directories: $DIRS"
+          # Find .ipynb files
+          IPYNB_FILES=$(find . -type f -name "*.ipynb" ! -path "./.git/*" ! -path "./.github/*")
+          IPYNB_FILE_COUNT=$(echo "$IPYNB_FILES" | wc -l | tr -d ' ')
 
-        echo "DIRS=$DIRS" >> "$GITHUB_ENV"
+          PY_FILES_STR=$(echo "$PY_FILES" | tr '\n' ' ' | sed 's/ $//')
+          IPYNB_FILES_STR=$(echo "$IPYNB_FILES" | tr '\n' ' ' | sed 's/ $//')
 
-    - name: Run Pylint
-      run: |
-        NUM_CORES=$(nproc)
-        pylint ${{ env.DIRS }} --jobs=$NUM_CORES --rcfile=.github/pylint.conf
+          echo "PY_FILES=$PY_FILES_STR" >> "$GITHUB_ENV"
+          echo "PY_FILE_COUNT=$PY_FILE_COUNT" >> "$GITHUB_ENV"
+          echo "IPYNB_FILES=$IPYNB_FILES_STR" >> "$GITHUB_ENV"
+          echo "IPYNB_FILE_COUNT=$IPYNB_FILE_COUNT" >> "$GITHUB_ENV"
+
+          echo "===== File Scan Result ====="
+          echo ".py files found: $PY_FILE_COUNT"
+          [ "$PY_FILE_COUNT" -gt 0 ] && echo "List: $PY_FILES_STR" || echo "List: None"
+          echo ".ipynb files found: $IPYNB_FILE_COUNT"
+          [ "$IPYNB_FILE_COUNT" -gt 0 ] && echo "List: $IPYNB_FILES_STR" || echo "List: None"
+          echo "============================"
+
+      - name: Run Pylint for .py files
+        if: env.PY_FILE_COUNT -gt 0
+        run: |
+          NUM_CORES=$(nproc)
+          echo "Running Pylint on $PY_FILE_COUNT .py files..."
+          pylint ${{ env.PY_FILES }} --jobs=$NUM_CORES --rcfile=.github/pylint.conf
+
+      - name: Skip Pylint for .py (no files)
+          if: env.PY_FILE_COUNT -eq 0
+          run: echo "✅ No .py files found, skipping Pylint for .py"
+
+      - name: Run Pylint for .ipynb files (via nbqa)
+        if: env.IPYNB_FILE_COUNT -gt 0
+        run: |
+          NUM_CORES=$(nproc)
+          echo "Running Pylint on $IPYNB_FILE_COUNT .ipynb files..."
+          nbqa pylint ${{ env.IPYNB_FILES }} --jobs=$NUM_CORES --rcfile=.github/pylint.conf
+
+      - name: Skip Pylint for .ipynb (no files)
+        if: env.IPYNB_FILE_COUNT -eq 0
+        run: echo "✅ No .ipynb files found, skipping Pylint for .ipynb"
 
   markdownlint-check:
     name: Markdownlint Check
@@ -56,8 +91,27 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Extract Markdown from .ipynb files
+        id: extract_md
+        run: |
+          mkdir -p temp_md
+          find . -name "*.ipynb" | while IFS= read -r nb; do
+            nb_relpath=$(realpath --relative-to=. "$nb")
+            temp_md_path="temp_md/${nb_relpath%.ipynb}.md"
+            mkdir -p "$(dirname "$temp_md_path")"
+            jq -r '
+              .cells
+              | map(select(.cell_type == "markdown") | .source | join(""))
+              | join("\n\n")
+            ' "$nb" > "$temp_md_path"
+          done
+
       - name: Run markdownlint
         uses: DavidAnson/markdownlint-cli2-action@v15
         with:
           globs: "**/*.md"
           config: '.github/.markdownlint.json'
+
+      - name: Clean up temporary files
+        if: always()
+        run: rm -rf temp_md

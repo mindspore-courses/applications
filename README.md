@@ -76,9 +76,11 @@ See the [FAQ](https://github.com/mindspore-courses/applications/wiki/Developer-F
 
 ## Contributing
 
-We welcome bug reports, suggestions, and code contributions via [Issues](https://github.com/mindspore-courses/applications/issues) or [PRs](https://github.com/mindspore-courses/applications/pulls). Please follow our submission guidelines — all PRs are reviewed and merged by @xing-yiren and another committer. Your contributions make the project stronger!
+1. **Issue**: We welcome bug reports, suggestions and feature requests via [Issues](https://github.com/mindspore-courses/applications/issues).
 
-**Guidelines**: [Contributing Guidelines](https://github.com/mindspore-courses/applications/wiki/Contributing-Guidelines)
+2. **Pull Requests**： Developers may contribute bug fixes or code enhancements by submitting a [Pull Request](https://github.com/mindspore-courses/applications/pulls). Before submitting, please review the [Contributing Guidelines](https://github.com/mindspore-courses/applications/wiki/Contributing-Guidelines). Each PR will be reviewed and merged by Committer @xing-yiren and at least one additional committer. Your contributions help continuously improve the project.
+
+3. **Open-Source Project Submissions**: If you would like to recommend or self-nominate a qualified open-source project, please first align the repository with the [project repository guidelines](https://github.com/mindspore-courses/applications/wiki/Contributing-Guidelines). Then submit the project via email to [contact@public.mindspore.cn](mailto:contact@public.mindspore.cn) with the subject line: `【MindSpore + OrangePi Project Submission】<Project Name>`. Include a brief project introduction and a link to the source repository in the email body.
 
 ## Contributors
 

@@ -1,0 +1,103 @@
+name: Auto-add hardware label
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  issues: write
+
+jobs:
+  label-hardware:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate GitHub App token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Get hardware selection
+        id: get_hardware
+        run: |
+          ISSUE_BODY=$(jq -r '.issue.body' "$GITHUB_EVENT_PATH")
+
+          HARDWARE_RAW=$(echo "$ISSUE_BODY" | awk '
+            /^### Hardware Environment/ { flag=1; next }
+            flag==1 && /^###/ { flag=0 }
+            flag==1 { print $0 }
+          ')
+
+          echo "$HARDWARE_RAW" | grep -oP '\[x\] \K.*' | tr '[:upper:]' '[:lower:]' | sed '/^$/d' > target_labels.txt || true
+
+          touch target_labels.txt
+
+          echo "Target lables: "
+          cat target_labels.txt
+
+      - name: Get current labels on the issue
+        id: get_current
+        run: |
+          set -euo pipefail
+
+          CURRENT_LABELS=$(curl -s -H "Authorization: token ${{ steps.generate-token.outputs.token }}" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels" || echo "[]")
+
+          echo "$CURRENT_LABELS" | jq -r '.[].name // empty' | grep -E '^(ascend|gpu|cpu)$' > current_labels.txt || true
+
+          touch current_labels.txt
+
+          echo "Current label list: "
+          cat current_labels.txt
+
+      - name: Calculate labels to add/remove
+        id: calc_diff
+        run: |
+          sort target_labels.txt > target_sorted.txt
+          sort current_labels.txt > current_sorted.txt
+
+          comm -23 target_sorted.txt current_sorted.txt > add_labels.txt
+
+          comm -13 target_sorted.txt current_sorted.txt > remove_labels.txt
+
+          echo "Labels to add: "
+          cat add_labels.txt
+          echo "Labels to remove: "
+          cat remove_labels.txt
+
+      - name: Add missing labels
+        run: |
+          if [ -s add_labels.txt ]; then
+                while IFS= read -r label; do
+                  if [ -n "$label" ]; then
+                    echo "Add label: $label"
+                    ENCODED_LABEL=$(printf "%s" "$label" | jq -sRr @uri)
+                    JSON_DATA=$(jq -n --arg label "$label" '[$label]')
+                    curl -X POST \
+                      -H "Authorization: token ${{ steps.generate-token.outputs.token }}" \
+                      -H "Accept: application/vnd.github.v3+json" \
+                      -H "Content-Type: application/json" \
+                      "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels" \
+                      -d "$JSON_DATA"
+                  fi
+                done < add_labels.txt
+              else
+                echo "No labels to add."
+              fi
+
+      - name: Remove extra labels
+        run: |
+          if [ -s remove_labels.txt ]; then
+            while IFS= read -r label; do
+              if [ -n "$label" ]; then
+                echo "Remove label: $label"
+                ENCODED_LABEL=$(printf "%s" "$label" | jq -sRr @uri)
+                curl -X DELETE \
+                  -H "Authorization: token ${{ steps.generate-token.outputs.token }}" \
+                  -H "Accept: application/vnd.github.v3+json" \
+                  "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels/$ENCODED_LABEL"
+              fi
+            done < remove_labels.txt
+          else
+            echo "No labels to remove."
+          fi

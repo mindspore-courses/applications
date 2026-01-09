@@ -69,7 +69,11 @@ pip install requirements.txt
 
 ## 贡献与反馈
 
-欢迎各位开发者通过 [Issue](https://github.com/mindspore-courses/applications/issues) 提交建议或 bug 反馈，也可直接发起 [PR](https://github.com/mindspore-courses/applications/pulls) 进行Bug修复或代码贡献（提交前请参考提交规范，由Committer @xing-yiren 及另一位committer 完成评审合入），你的每一份参与都能让本项目更加完善。
+1. **Issue**：欢迎各位开发者通过 [Issue](https://github.com/mindspore-lab/orange-pi-mindspore/issues) 提交建议或 bug 反馈
+
+2. **Pull Request**: 开发者可发起 [PR](https://github.com/mindspore-courses/applications/pulls) 进行Bug修复或代码贡献（提交前请参考[提交规范](https://github.com/mindspore-lab/orange-pi-mindspore/wiki/Contributing-Guidelines)，由Committer @xing-yiren 及另一位Committer 完成评审合入），你的每一份参与都能让本项目更加完善。
+
+3. **开源项目**：若开发者有符合条件的开源项目推荐/自荐，欢迎按照[项目仓规范](https://github.com/mindspore-lab/orange-pi-mindspore/wiki/Contributing-Guidelines)完善项目内容后，邮件至[contact@public.mindspore.cn](mailto:contact@public.mindspore.cn)进行投稿，邮件标题请参考：`【昇思+香橙派项目投稿】项目名称`格式，并在正文中对项目进行简单介绍，附上代码仓链接。
 
 ### 提交规范
 

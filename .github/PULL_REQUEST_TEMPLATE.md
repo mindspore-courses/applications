@@ -16,15 +16,16 @@ Summarize key modifications — new features, bug fixes, refactors, or documenta
 
 # Testing & Benchmark
 <!--
-If applicable, include test results (accuracy, unit tests, or performance benchmarks).
+If applicable, include test results (e.g., unit tests, accuracy verification, performance benchmarks).
+Please attach **logs, screenshots or reports** demonstrating that the code runs successfully and produces the expected results.
 -->
 
 # Checklist
 
-- [ ] Read and followed the [Contributing Guidelines](https://github.com/mindspore-courses/applications/wiki/Contributing-Guidelines)
-- [ ] Self-tested locally to ensure CI will pass
-- [ ] Updated documentation if needed
-- [ ] Verified accuracy or performance benchmarks if applicable
+- [ ] Read and followed the [Contributing Guidelines](https://github.com/mindspore-lab/applications/wiki/Contributing-Guidelines).
+- [ ] Self-tested locally to ensure the code runs correctly and achieves expected results (all CI checks expected to pass).
+- [ ] Updated documentation if needed.
+- [ ] Verified accuracy or performance benchmarks if applicable.
 
 # Reviewers
 <!--

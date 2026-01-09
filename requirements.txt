@@ -2,3 +2,4 @@ pylint==2.17
 mindspore==2.7.0
 mindnlp==0.5.1
 download
+nbqa
