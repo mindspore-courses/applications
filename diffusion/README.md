@@ -6,7 +6,7 @@ This directory contains ready-to-use Diffusion application notebooks built with 
 
 | No. | Model | Description                     |
 | :-- | :---- | :------------------------------ |
-| 1   | / | This section is empty for now — feel free to contribute your first application! |
+| 1   | [ddpm](./ddpm/train_ddpm_generation.ipynb) | ddpm training and inference application based on MindSpore NLP. |
 
 ## Contributing New Diffusion Applications
 
