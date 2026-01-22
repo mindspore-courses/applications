@@ -6,7 +6,7 @@ This directory contains ready-to-use Natural Language Processing application not
 
 | No. | Model | Description                     |
 | :-- | :---- | :------------------------------ |
-| 1   | [T5](./t5/finetune_seq2seq_translation.ipynb) | Includes notebooks for T5 finetuning on tasks such as machine translation |
+| 1   | / | This section is empty for now — feel free to contribute your first application! |
 
 ## Contributing New NLP Applications
 
