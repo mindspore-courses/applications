@@ -14,6 +14,7 @@ The following notebooks are actively maintained in sync with MindSpore and MindS
 | 2   | [distilgpt2](./distilgpt2/) | Includes notebooks for DistilGPT-2 finetuning and inference on causal language modeling (text generation) tasks. |
 | 3   | [bert](./bert/) | Includes notebooks for finetuning BERT on SWAG dataset for Multiple Choice tasks using MindSpore NLP |
 | 4   | [esm](./esmforproteinfolding/) | Includes notebooks for EsmForProteinFolding finetuning and inference tasks  |
+| 5   | [ernie4.5](./ernie4_5/) | Includes notebooks for Ernie 4.5 inference tasks |
 
 ### Community-Driven / Legacy Applications
 
