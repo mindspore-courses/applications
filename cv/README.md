@@ -8,6 +8,7 @@ This directory contains ready-to-use Computer Vision application notebooks built
 | :-- | :---- | :-------------------------------- |
 | 1   | [ResNet](./resnet/) | Includes notebooks for ResNet finetuning on tasks such as chinese herbal classification |
 | 2   | [U-Net](./unet/) | Includes notebooks for U-Net training on tasks such as segmentation |
+| 3   | [Swin Transformer](./swin/) | Includes notebooks for Swin Transformer finetuning on tasks such as image classification |
 
 ## Contributing New CV Applications
 
