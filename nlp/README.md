@@ -6,7 +6,7 @@ This directory contains ready-to-use Natural Language Processing application not
 
 | No. | Model | Description                     |
 | :-- | :---- | :------------------------------ |
-| 1   | BERT-QA | An extractive question answering system based on BERT-Base and SQuAD v1.1. Features include sliding window mechanism for long documents. |
+| 1   | [BERT-QA](bert/question_answering_bert.ipynb) | An extractive question answering system based on BERT-Base and SQuAD v1.1. Features include sliding window mechanism for long documents. |
 
 ## Contributing New NLP Applications
 
