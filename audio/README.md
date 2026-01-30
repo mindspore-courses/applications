@@ -7,6 +7,7 @@ This directory contains ready-to-use Audio application notebooks built with Mind
 | No. | Model | Description                       |
 | :-- | :---- | :-------------------------------- |
 | 1   | [WaveNet](./wavenet/) | Includes notebooks for WaveNet training on tasks such as audio synthesis |
+| 2   | [Wav2Vec2](./wav2vec2/) | Includes notebooks for Wav2Vec2 fine-tuning on tasks such as audio intent classification (MInDS-14) |
 
 ## Contributing New Audio Applications
 
