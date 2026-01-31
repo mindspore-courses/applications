@@ -37,7 +37,7 @@ jobs:
     - name: Get target directories
       id: get_dirs
       run: |
-        DIRS=$(find . -maxdepth 1 -type d ! -name "." ! -name ".github" | tr '\n' ' ')
+        DIRS=$(find . -maxdepth 1 -type d ! -name "." ! -name ".github" ! -name ".git" | tr '\n' ' ')
 
         echo "Target directories: $DIRS"
 
