@@ -4,13 +4,13 @@ This directory contains ready-to-use Natural Language Processing application not
 
 ## Application List
 
-| No. | Model | Description                     |
-| :-- | :---- | :------------------------------ |
-| 1   | / | This section is empty for now — feel free to contribute your first application! |
+| No.  | Model                                                        | Description                                                  |
+| :--- | :----------------------------------------------------------- | :----------------------------------------------------------- |
+| 1    | [bert](./text_classification/train_bert_classification.ipynb) | bert training and inference application based on MindSpore NLP. |
 
 ## Contributing New NLP Applications
 
-To contribute a new NLP application:
+To contribute a new diffusion application:
 
 1. Place your notebook in the corresponding model directory.
 2. If the model does not yet have its own directory, create a new one following the existing structure.
