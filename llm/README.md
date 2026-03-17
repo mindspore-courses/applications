@@ -11,9 +11,10 @@ The following notebooks are actively maintained in sync with MindSpore and MindS
 | No. | Model | Description              |
 | :-- | :---- | :----------------------- |
 | 1   | [t5](./t5/) | Includes notebooks for T5 finetuning and inference on tasks such as email summarization |
-| 2   | [distilgpt2](./distilgpt2/) | Includes notebooks for DistilGPT-2 finetuning and inference on causal language modeling (text generation) tasks. |
-| 3   | [bert](./bert/) | Includes notebooks for finetuning BERT on SWAG dataset for Multiple Choice tasks using MindSpore NLP |
-| 4   | [esm](./esmforproteinfolding/) | Includes notebooks for EsmForProteinFolding finetuning and inference tasks  |
+| 2   | [helsinki-nlp/t5](./t5/finetune_seq2seq_translation.ipynb) | Includes notebooks for Helsinki-NLP/T5 finetuning and inference on tasks such as translation |
+| 3   | [distilgpt2](./distilgpt2/) | Includes notebooks for DistilGPT-2 finetuning and inference on causal language modeling (text generation) tasks. |
+| 4   | [bert](./bert/) | Includes notebooks for finetuning BERT on SWAG dataset for Multiple Choice tasks using MindSpore NLP |
+| 5   | [esm](./esmforproteinfolding/) | Includes notebooks for EsmForProteinFolding finetuning and inference tasks  |
 
 ### Community-Driven / Legacy Applications
 
