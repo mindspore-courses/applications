@@ -11,6 +11,7 @@ The following notebooks are actively maintained in sync with MindSpore and MindS
 | No. | Model | Description              |
 | :-- | :---- | :----------------------- |
 | 1   | [t5](./t5/) | Includes notebooks for T5 finetuning and inference on tasks such as email summarization |
+| 2   | [Helsinki-NLP/T5](./t5/finetune_seq2seq_translation.ipynb) | Includes notebooks for Helsinki-NLP/T5 finetuning and inference on tasks such as translation |
 
 ### Community-Driven / Legacy Applications
 
