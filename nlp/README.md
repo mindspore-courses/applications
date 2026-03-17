@@ -6,7 +6,7 @@ This directory contains ready-to-use Natural Language Processing application not
 
 | No. | Model | Description                     |
 | :-- | :---- | :------------------------------ |
-| 1   | / | This section is empty for now — feel free to contribute your first application! |
+| 1   | [bert](./text_classification/train_bert_classification.ipynb) | bert training and inference application based on MindSpore NLP. |
 
 ## Contributing New NLP Applications
 
