@@ -4,8 +4,8 @@ This directory contains ready-to-use Natural Language Processing application not
 
 ## Application List
 
-| No.  | Model | Description                                                  |
-| :--- | :---- | :----------------------------------------------------------- |
+| No. | Model | Description                     |
+| :-- | :---- | :------------------------------ |
 | 1   | [bert](./bert/train_bert_classification.ipynb) | bert training and inference application based on MindSpore NLP. |
 
 ## Contributing New NLP Applications
