@@ -8,7 +8,7 @@ This directory contains ready-to-use Computer Vision application notebooks built
 | :-- | :---- | :-------------------------------- |
 | 1   | [ResNet](./resnet/) | Includes notebooks for ResNet finetuning on tasks such as chinese herbal classification |
 | 2   | [U-Net](./unet/) | Includes notebooks for U-Net training on tasks such as segmentation |
-| 3   | [SAM](./sam/) | Includes notebooks for using SAM to inference |
+| 3   | [OCR](./ocr/) | Includes notebooks for OCR inference on tasks such as deepseek-ocr demo |
 
 ## Contributing New CV Applications
 
