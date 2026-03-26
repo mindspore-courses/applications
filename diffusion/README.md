@@ -6,7 +6,7 @@ This directory contains ready-to-use Diffusion application notebooks built with 
 
 | No. | Model | Description                     |
 | :-- | :---- | :------------------------------ |
-| 1   | / | This section is empty for now — feel free to contribute your first application! |
+| 1   | https://github.com/tt5416/applications/tree/dev/diffusion/photo2style | Includes notebooks for convert real photos into images of a specified artistic style. |
 
 ## Contributing New Diffusion Applications
 
