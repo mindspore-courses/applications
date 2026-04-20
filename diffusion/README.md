@@ -6,7 +6,7 @@ This directory contains ready-to-use Diffusion application notebooks built with 
 
 | No. | Model | Description                     |
 | :-- | :---- | :------------------------------ |
-| 1   | [ddpm](./ddpm/train_ddpm_generation.ipynb) | ddpm training and inference application based on MindSpore NLP. |
+| 1   | [ddpm](./ddpm/train_ddpm_generation.ipynb) | ddpm training and inference application based on MindSpore NLP. | 2   | [cartoonify](./cartoonify/cartoonify_demo.ipynb) | Photo-to-style portrait generation demo based on MindSpore and MindSpore NLP, supporting cartoonify, ghibli and guohua styles. |
 
 ## Contributing New Diffusion Applications
 
